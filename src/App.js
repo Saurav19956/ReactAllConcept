@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import DessertList from './DessertList.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const dessert = [
+  {name: "IceCream", price: 20},
+  {name: "Cold Coffie", price: 30},
+]
+
+
+export default function App(){
+  return(
+    <div>
+      <h1>Rendering list</h1>
+      < DessertList data = {dessert}/>
     </div>
-  );
+  )
 }
-
-export default App;

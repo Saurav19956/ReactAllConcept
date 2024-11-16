@@ -1,55 +1,104 @@
-// import DessertList from './DessertList.js';
+import react, {useState} from 'react'
+import {validateEmail} from './utils';
 
-// const dessert = [
-//   {name: "IceCream", price: 20},
-//   {name: "Cold Coffie", price: 30},
-// ]
+function App(){
+  const PasswordErrorMessage = ()=>{
+    return(
+     <p> password should have atleast 8 charcter</p>
+    )
+  }
+  const EmailErrorMessage = ()=>{
+    return(
+      <p>please Enter valid email adress</p>
+    )
+  }
+  const [firstName, setfirstName] = useState('');
+  const [lastName, setlastName] = useState('');
+  const [email, setEmail] = useState({
+    value: "", isTouched: false,
+  });
+  const [password, setPassword] = useState({
+    value: "",
+    isTouched: false,
+  });
 
+  const [role, setRole] = useState('role')
 
-// export default function App(){
-//   return(
-//     <div>
-//       <h1>Rendering list</h1>
-//       < DessertList data = {dessert}/>
-//     </div>
-//   )
-// }
+  const getIsFormValid = ()=>{
+    return(
+      firstName.trim() !== "" && validateEmail(email) && password.value.length >= 8 && (role === 'individual' || role === 'business')
+    )
+  }
 
+  // clear form
+  const clearForm = ()=>{
+    setfirstName('');
+    setlastName('');
+    setEmail('');
+    setPassword({value: "", isTouched: false});
+    setRole('role')
+  }
 
-import react, {useState} from 'react';
-
-
-function AppFeedBackForm(){
-  const [score, setScore] = useState(0);
-  const [comment, setComment] = useState('');
-  const handleSubmit = (e)=>{
-    if(Number(score) <= 5 && comment.length < 10){
-      alert('please provide comment why experience was poor')
+  const handleSubmit= (event)=>{
+    event.preventDefault();
+    if(getIsFormValid()){
+      alert('Account created');
+      clearForm();
     }
-    console.log('form submitted');
-    setScore(0);
-    setComment('')
-    
+
   }
     return(
+  <div>
+    <form onSubmit={handleSubmit}>
+      <fieldset>
+        <h2> SignUp</h2>
         <div>
-            <form onSubmit={handleSubmit}>
-              <fieldset>
-                <h2> Feedback form</h2>
-                <div>
-                  <label>Score:{score}</label>
-                  <input type = "range" min= "0" max= "10" value ={score} onChange={e=>setScore(e.target.value)}/>
-                </div>
-                <div>
-                  <label>Comment:</label>
-                  <textarea value = {comment} onChange={e =>setComment(e.target.value)}/>
-                </div>
-                <button type='submit'>submit</button>
-                </fieldset>
-            </form>
+          <label>First name <sup>*</sup></label>
+          <input placeholder='First Name' value = {firstName} onChange={(e) =>setfirstName(e.target.value)} />
         </div>
-    )
+        <div>
+          <label>Last name </label>
+          <input placeholder='Last Name' value = {lastName} onChange={(e)=> setlastName(e.target.value)} />
+        </div>
+        <div>
+          <label> Email adress<sup>*</sup></label>
+          <input placeholder='Email adress' value = {email.value} onChange={(e)=> setEmail({...email, value: e.target.value})}
+          onBlur={() =>
+            setEmail((prev) => ({ ...prev, isTouched: true }))
+          }
+           />
+           {email.isTouched && !validateEmail(email.value) && (
+              <EmailErrorMessage />
+            )}
+        </div>
+        <div>
+          <label> password <sup>*</sup></label>
+          <input type = 'password' placeholder='password' value={password.value} onChange={(e)=>setPassword({...password, value: e.target.value})} 
+              onBlur={()=>{
+                setPassword((prev) =>({
+                  ...prev, isTouched: true
+                }))
+              }}
+          />
+          {password.isTouched && password.value.length < 8 && (
+              <PasswordErrorMessage />
+          )}
+        </div>
+        <div>
+          <label> Role <sup>*</sup></label>
+          <select value={role}
+              onChange={(e) => setRole(e.target.value)}>
+            <option value= 'role'>Role</option>
+            <option value= 'individual'>Individual</option>
+            <option value= 'business'>Business</option>
+          </select>
+        </div>
+        <button type='submit' disabled = {!getIsFormValid}>Create Account</button>
+      </fieldset>
 
+    </form>
+  </div>
+  )
 }
 
-export default AppFeedBackForm;
+export default App;

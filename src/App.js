@@ -1,48 +1,85 @@
-import { UserProvider, useUser } from "./UserContext"
+import "./App.css";
+import { ThemeProvider, useTheme } from "./ThemeContext";
+import Switch from "./Switch";
 
-const LoggedUser = ()=>{
-  const {user} = useUser();
-    return(
-    <p>
-      Hello !{user.name}
+const Title = ({children})=>{
+  const { theme } = useTheme();
+  return (
+      <h2
+        style={{
+          color: theme === "light" ? "black" : "white",
+        }}
+      >
+        {children}
+      </h2>
+  );
+}
+
+const Paragraph = ({ children }) => {
+  const { theme } = useTheme();
+  return (
+    <p
+      style={{
+        color: theme === "light" ? "black" : "white",
+      }}
+    >
+      {children}
     </p>
-    )
-  }
+  );
+};
 
-const Header = ()=>{
-  
+const Content = () => {
+  return (
+    <div>
+      <Paragraph>
+        We are a pizza loving family. And for years, I searched and searched and
+        searched for the perfect pizza dough recipe. I tried dozens, or more.
+        And while some were good, none of them were that recipe that would
+        make me stop trying all of the others.
+      </Paragraph>
+    </div>
+  );
+};
+
+const Header = () => {
   return (
     <header>
-      <h2>
-        Blog App
-      </h2>
-      <LoggedUser/>
+      <Title>Little Lemon 🍕</Title>
+      <Switch />
     </header>
-  )
-}
+  );
+};
 
-const Page = ()=>{
-  const {user} = useUser();
-  return(
-    <div>
-      <h2>What is Lorem</h2>
-      <p>Lorem </p>
-      <p>written by {user.name}</p>
+const Page = () => {
+  return (
+    <div className="Page">
+      <Title>When it comes to dough</Title>
+      <Content />
     </div>
-  )
-}
+  );
+};
 
-function App(){
-  return(
-    <div>
-      <Header/>
-      <Page/>
+function App() {
+  const { theme } = useTheme();
+  return (
+    <div
+      className="App"
+      style={{
+        backgroundColor: theme === "light" ? "white" : "black",
+      }}
+    >
+      <Header />
+      <Page />
     </div>
-  )
+  );
 }
 
-function Root(){
-  return <UserProvider><App/></UserProvider> 
+function Root() {
+  return (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  );
 }
 
 export default Root;

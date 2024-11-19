@@ -2,12 +2,12 @@ import { UserProvider, useUser } from "./UserContext"
 
 const LoggedUser = ()=>{
   const {user} = useUser();
-  return(
+    return(
     <p>
       Hello !{user.name}
     </p>
-  )
-}
+    )
+  }
 
 const Header = ()=>{
   

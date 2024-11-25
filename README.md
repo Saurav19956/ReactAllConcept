@@ -1,8 +1,5 @@
-# useState return exact only 2 value
-statavAriable , and setter function to upfdate state of variable in component 
+updating object as a state varaible 
+1. use spread operrator for copying all object property
+2. cannot reassign the state variable with any data type string, object etc as it will throw type error 
+3. always use dot notation to access the property of object for rendering in browser
 
-why array destatucturing why not object ?
-order plays role here in case of object there is no oreder and object property must match the state variable and method to function
-
-
-useState : event triggered when user clicked on buttion , mouse hover etc

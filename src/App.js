@@ -1,24 +1,40 @@
-import React,{} from 'react';
-import './App.css';
-
-
-
-function App(){
-  const formInputRef = React.useRef(null);
-
-const focusInput = ()=>{
-  formInputRef.current.focus();
+import { useState, useEffect, useRef } from "react";
+export default function App() {
+  const [day, setDay] = useState("Monday");
+  const prevDay = usePrevious(day);
+  const getNextDay = () => {
+    if (day === "Monday") {
+      setDay("Tuesday")
+    } else if (day === "Tuesday") {
+      setDay("Wednesday")
+    } else if (day === "Wednesday") {
+      setDay("Thursday")
+    } else if (day === "Thursday") {
+      setDay("Friday")
+    } else if (day === "Friday") {
+      setDay("Monday")
+    }
+  }
+  return (
+    <div style={{padding: "40px"}}>
+      <h1>
+        Today is: {day}<br />
+        {
+          prevDay && (
+            <span>Previous work day was: {prevDay}</span>
+          )
+        }
+      </h1>
+      <button onClick={getNextDay}>
+        Get next day
+      </button>
+    </div>
+  );
 }
-
-  return(
-    <>
-    <h1>useing useRef to access underlyong DOM</h1>
-    <input ref= {formInputRef} type= 'text'/>
-    <button onClick={focusInput}>focus input</button>
-    </>
-  )
-
-  
+function usePrevious(val) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = val;
+  },[val])
+  return ref.current;
 }
-
-export default App;

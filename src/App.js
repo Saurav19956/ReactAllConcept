@@ -1,48 +1,29 @@
-import { useState } from "react";
+import {useReducer} from 'react';
+import './App.css';
 
-export default function App() {
-  const [giftCard, setGiftCard] = useState(
-    {
-        firstName: "Jennifer",
-        lastName: "Smith",
-        text: "Free dinner for 4 guests",
-        valid: true,
-        instructions: "To use your coupon, click the button below.",
-    }
-  );
+const reducer = (state,action)=>{
+  if(action.type === 'buy-ingredient') return {money: state.money -10}
+  if(action.type === 'sell') return {money: state.money+10}
+  if(action.type === 'celebrity visit') return {money: state.money+5000}
+  return state
 
-  function spendGiftCard() {
-    setGiftCard(prevState => {
-      return {
-        ...prevState,
-        text: "your coupen has been used.",
-        valid: false,
-        instructions: "Please visit our restaurant to renew your gift card.",
-      }
-    })
-  }
-
-  return (
-    <div style={{padding: '40px'}}>
-      <h1>
-        Gift Card Page
-      </h1>
-      <h2>
-        Customer: {giftCard.firstName} {giftCard.lastName}
-      </h2>
-      <h3>
-        {giftCard.text}
-      </h3>
-      <p>
-        {giftCard.instructions}
-      </p>
-      {
-        giftCard.valid && (
-          <button onClick={spendGiftCard}>
-            Spend Gift Card
-          </button>
-        )
-      }
-    </div>
-  );
 }
+
+
+function App(){
+  const initialState = {money: 100};
+  const [state, dispatch] = useReducer(reducer,initialState);
+
+  return(
+    <div>
+    <h1>wallet: {state.money}</h1>
+    <div>
+<button onClick={()=>dispatch({type:'buy-ingredient'})}>shopping for vegie!</button>
+<button onClick={()=>dispatch({type:'sell'})}>sell!</button>
+<button onClick={()=>dispatch({type:'celebrity visit'})}>celebrity!</button>
+    </div>
+    </div>
+  )
+}
+
+export default App;
